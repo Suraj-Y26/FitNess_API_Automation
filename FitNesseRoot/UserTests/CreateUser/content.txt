@@ -1,0 +1,14 @@
+!path .
+
+|import|
+|fixtures.user_fixture|
+|fixtures.base_fixture|
+
+!3 Test: Create New User (POST)
+
+We want to verify that posting a new user with name "John" and job "QA" successfully creates the user with a `201` status code.
+
+|script|!-UserFixture-!|
+|create user;|John|QA|
+|check|status code|201|
+|show|response body|

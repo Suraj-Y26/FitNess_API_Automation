@@ -1,0 +1,14 @@
+!path .
+
+|import|
+|fixtures.user_fixture|
+|fixtures.base_fixture|
+
+!3 Test: Delete User (DELETE)
+
+We want to verify that deleting an existing user with ID "2" returns a `200` status code.
+
+|script|!-UserFixture-!|
+|delete user|2|
+|check|status code|200|
+|show|response body|

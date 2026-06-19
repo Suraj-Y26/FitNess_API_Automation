@@ -1,0 +1,14 @@
+!path .
+
+|import|
+|fixtures.user_fixture|
+|fixtures.base_fixture|
+
+!3 Test: Retrieve User Details (GET)
+
+We want to verify that GET requests to `/users/2` returns user information successfully with a `200` status code.
+
+|script|!-UserFixture-!|
+|get user|2|
+|check|status code|200|
+|show|response body|

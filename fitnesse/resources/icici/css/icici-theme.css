@@ -1,0 +1,188 @@
+/* ICICI Pru - Anti-Money Laundering Theme for FitNesse */
+
+/* Navbar */
+.icici-navbar {
+  background: linear-gradient(135deg, #005691 0%, #99264D 50%, #B02A30 100%) !important;
+  border-bottom: 3px solid #7A1F2E !important;
+}
+
+.icici-brand img {
+  height: 36px;
+}
+
+/* Hide the default FitNesse logo */
+.navbar-brand {
+  background-image: none !important;
+}
+
+/* Nav links */
+.navbar .nav-link,
+.navbar a,
+.navbar .nav-item a,
+nav a,
+nav .nav-link,
+.icici-navbar a,
+.icici-navbar .nav-link,
+.navbar-nav .nav-link,
+.navbar-nav > li > a {
+  color: #FFFFFF !important;
+}
+
+.navbar .nav-link:hover,
+.navbar a:hover,
+nav a:hover {
+  color: #FEF0E5 !important;
+}
+
+/* Dropdown menu items (Tools, Add) */
+.dropdown-menu a,
+.dropdown-menu .dropdown-item,
+.dropdown-menu li a,
+.navbar .dropdown-menu a,
+nav .dropdown-menu a {
+  color: #005691 !important;
+  background-color: #FFFFFF !important;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu li a:hover,
+.navbar .dropdown-menu a:hover,
+nav .dropdown-menu a:hover {
+  color: #7A1F2E !important;
+  background-color: #FEF0E5 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #B85C1B;
+}
+
+h1 {
+  border-bottom: 2px solid #E87722;
+  padding-bottom: 8px;
+}
+
+/* Links */
+a {
+  color: #E87722;
+}
+
+a:hover {
+  color: #7A1F2E;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  background-color: #FEF0E5 !important;
+}
+
+.breadcrumb a,
+.breadcrumb li,
+.breadcrumb .breadcrumb-item,
+.breadcrumb .breadcrumb-item a,
+.breadcrumb span {
+  color: #005691 !important;
+}
+
+.breadcrumb .breadcrumb-item.active {
+  color: #7A1F2E !important;
+}
+
+.breadcrumb a:hover,
+.breadcrumb .breadcrumb-item a:hover {
+  color: #7A1F2E !important;
+}
+
+/* Body */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #FFFAF5;
+}
+
+/* Table headers */
+table.hash_table th,
+table.decision_table th,
+table th {
+  background-color: #e89622 !important;
+  color: #FFFFFF !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #E87722 !important;
+  border-color: #005691 !important;
+}
+
+.btn-primary:hover {
+  background-color: #005691 !important;
+}
+
+/* Pass/Fail */
+.pass, .right, td.pass {
+  background-color: #30873b !important;
+  color: #FFFFFF !important;
+}
+
+.fail, .wrong, td.fail {
+  background-color: #F8D7DA !important;
+}
+
+/* Test result ribbon (pass) */
+.test-summary, .summary, .alert-success, .test-output-name {
+  background-color: #30873b !important;
+  color: #FFFFFF !important;
+  border-color: #28a745 !important;
+}
+
+.test-summary a, .summary a, .alert-success a {
+  color: #FFFFFF !important;
+  text-decoration: underline;
+}
+
+/* Master-Class CSS Overrides to bypass FitNesse's default text-hiding and clipping */
+.navbar-brand, .icici-brand {
+  text-indent: 0 !important;
+  overflow: visible !important;
+  width: auto !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.icici-brand span {
+  font-weight: bold !important;
+  color: #ffffff !important;
+  margin-left: 10px !important;
+  font-size: 18px !important;
+  vertical-align: middle !important;
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* Master-Class CSS Overrides to fix the Navbar menu headings hover/focus visibility */
+.icici-navbar a,
+.icici-navbar .nav-link,
+.icici-navbar .nav-item a,
+.navbar-nav > li > a {
+  color: #FFFFFF !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease-in-out;
+  padding: 6px 12px !important;
+  border-radius: 4px;
+}
+
+.icici-navbar a:hover,
+.icici-navbar .nav-link:hover,
+.icici-navbar .nav-item a:hover,
+.navbar-nav > li > a:hover,
+.icici-navbar .dropdown.show > a,
+.icici-navbar .dropdown-toggle:focus,
+.icici-navbar .nav-item.show a {
+  color: #FEF0E5 !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  text-decoration: none !important;
+}
+
+/* Ensure the dropdown toggle stays readable and centered */
+.icici-navbar .dropdown-toggle {
+  display: inline-block !important;
+}
