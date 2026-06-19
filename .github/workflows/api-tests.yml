@@ -37,21 +37,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 5. Execute Test Suite & Auto-Generate Report
-      # Reads REQRES_API_KEY from GitHub Repository Secrets.
-      # If not set, it will gracefully fallback to the embedded free key!
+      # 5. Execute Test Suite Natively
+      # Runs the suite headlessly using the FitNesse JAR.
+      # Sets PYTHONPATH to '.' so Python can find your fixtures on Linux CI.
       - name: Run Test Suite
         env:
-          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+          PYTHONPATH: .
         run: |
-          python run_tests.py
-
-      # 6. Upload HTML Report as an Action Artifact
-      # You can click and download the beautiful standalone dashboard directly from GitHub!
-      - name: Upload HTML Test Report
-        if: always() # Guarantees report upload even if tests fail!
-        uses: actions/upload-artifact@v4
-        with:
-          name: fitnesse-api-test-report
-          path: FitNesseRoot/files/reports/suite_report.html
-          retention-days: 14 # Keeps report for 14 days before automatic cleanup
+          java -jar fitnesse-standalone.jar -c "UserTests?suite&format=text"
