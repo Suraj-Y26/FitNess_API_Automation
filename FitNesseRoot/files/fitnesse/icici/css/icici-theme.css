@@ -186,3 +186,9 @@ table th {
 .icici-navbar .dropdown-toggle {
   display: inline-block !important;
 }
+
+/* Master-Class CSS Overrides to disable forced/redundant scrollbars and horizontal scrolling */
+html, body {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
