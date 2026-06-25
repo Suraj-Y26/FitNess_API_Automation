@@ -1,8 +1,8 @@
-/* ICICI Pru - Anti-Money Laundering Theme for FitNesse */
+/* ICICI Bank Theme for FitNesse */
 
 /* Navbar */
 .icici-navbar {
-  background: linear-gradient(135deg, #005691 0%, #99264D 50%, #B02A30 100%) !important;
+  background: linear-gradient(135deg, #E87722 0%, #D4681A 100%) !important;
   border-bottom: 3px solid #7A1F2E !important;
 }
 
@@ -40,7 +40,7 @@ nav a:hover {
 .dropdown-menu li a,
 .navbar .dropdown-menu a,
 nav .dropdown-menu a {
-  color: #005691 !important;
+  color: #B85C1B !important;
   background-color: #FFFFFF !important;
 }
 
@@ -82,7 +82,7 @@ a:hover {
 .breadcrumb .breadcrumb-item,
 .breadcrumb .breadcrumb-item a,
 .breadcrumb span {
-  color: #005691 !important;
+  color: #B85C1B !important;
 }
 
 .breadcrumb .breadcrumb-item.active {
@@ -111,11 +111,11 @@ table th {
 /* Buttons */
 .btn-primary {
   background-color: #E87722 !important;
-  border-color: #005691 !important;
+  border-color: #B85C1B !important;
 }
 
 .btn-primary:hover {
-  background-color: #005691 !important;
+  background-color: #B85C1B !important;
 }
 
 /* Pass/Fail */
@@ -138,57 +138,4 @@ table th {
 .test-summary a, .summary a, .alert-success a {
   color: #FFFFFF !important;
   text-decoration: underline;
-}
-
-/* Master-Class CSS Overrides to bypass FitNesse's default text-hiding and clipping */
-.navbar-brand, .icici-brand {
-  text-indent: 0 !important;
-  overflow: visible !important;
-  width: auto !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.icici-brand span {
-  font-weight: bold !important;
-  color: #ffffff !important;
-  margin-left: 10px !important;
-  font-size: 18px !important;
-  vertical-align: middle !important;
-  font-family: 'Segoe UI', Arial, sans-serif !important;
-}
-
-/* Master-Class CSS Overrides to fix the Navbar menu headings hover/focus visibility */
-.icici-navbar a,
-.icici-navbar .nav-link,
-.icici-navbar .nav-item a,
-.navbar-nav > li > a {
-  color: #FFFFFF !important;
-  background-color: transparent !important;
-  transition: all 0.2s ease-in-out;
-  padding: 6px 12px !important;
-  border-radius: 4px;
-}
-
-.icici-navbar a:hover,
-.icici-navbar .nav-link:hover,
-.icici-navbar .nav-item a:hover,
-.navbar-nav > li > a:hover,
-.icici-navbar .dropdown.show > a,
-.icici-navbar .dropdown-toggle:focus,
-.icici-navbar .nav-item.show a {
-  color: #FEF0E5 !important;
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  text-decoration: none !important;
-}
-
-/* Ensure the dropdown toggle stays readable and centered */
-.icici-navbar .dropdown-toggle {
-  display: inline-block !important;
-}
-
-/* Master-Class CSS Overrides to disable forced/redundant scrollbars and horizontal scrolling */
-html, body {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
 }

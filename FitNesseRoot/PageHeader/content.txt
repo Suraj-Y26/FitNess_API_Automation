@@ -1,1 +1,311 @@
-#page header
+!-<link rel="stylesheet" type="text/css" href="/files/fitnesse/css/icici-prudential.css">
+
+<!-- FitNesse default nav is suppressed at template level (skeleton.vm).
+     This minimal reset just ensures no leftover padding or margins appear. -->
+<style>
+body { padding-top: 0 !important; margin-top: 0 !important; }
+</style>
+
+<!-- ═══════════════════════════════════════════════════
+     LOGIN OVERLAY
+     ═══════════════════════════════════════════════════ -->
+<div id="icici-login-overlay">
+  <div id="icici-login-box">
+    <div id="icici-login-logo">
+      <img src="/files/images/icici-prudential-logo.png" alt="ICICI Prudential" onerror="this.style.display='none'">
+      <div id="icici-login-title">ICICI Prudential</div>
+      <div id="icici-login-subtitle">AML — API Test Automation Framework</div>
+    </div>
+    <div id="icici-login-form">
+      <div id="icici-login-error"></div>
+      <div class="icici-field">
+        <label for="icici-username">Username</label>
+        <input type="text" id="icici-username" placeholder="Enter username" autocomplete="username">
+      </div>
+      <div class="icici-field">
+        <label for="icici-password">Password</label>
+        <input type="password" id="icici-password" placeholder="Enter password" autocomplete="current-password">
+      </div>
+      <button id="icici-login-btn" onclick="iciLogin()">Sign In</button>
+      <div id="icici-login-hint">
+        Authorised users only &nbsp;|&nbsp; Contact QA Admin for access
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN HEADER BANNER
+     ═══════════════════════════════════════════════════ -->
+<div class="icici-header-banner" id="icici-header-banner" style="display:none">
+
+  <!-- Left: logo + title -->
+  <div class="icici-header-left">
+    <img src="/files/images/icici-prudential-logo.png" alt="ICICI Prudential"
+         class="icici-header-logo-img" onerror="this.style.display='none'">
+    <div class="icici-header-text">
+      <div class="icici-header-title">ICICI Prudential</div>
+      <div class="icici-header-subtitle">AML &mdash; API Test Automation Framework</div>
+    </div>
+  </div>
+
+  <!-- Centre: action links (shown based on role) -->
+  <nav class="icici-header-nav" id="icici-header-nav">
+    <!-- Nav links injected by JS after login -->
+  </nav>
+
+  <!-- Right: user info + logout -->
+  <div class="icici-header-right">
+    <div class="icici-user-chip" id="icici-user-chip">
+      <span class="icici-user-icon">&#9679;</span>
+      <span id="icici-user-display"></span>
+      <span class="icici-role-badge" id="icici-role-badge"></span>
+    </div>
+    <button class="icici-logout-btn" onclick="iciLogout()">Sign Out</button>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     STYLES
+     ═══════════════════════════════════════════════════ -->
+<style>
+/* ── Login Overlay ──────────────────────────────────── */
+#icici-login-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, #A6192E 0%, #004A80 60%, #003060 100%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 99999;
+}
+#icici-login-box {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  width: 380px;
+  overflow: hidden;
+}
+#icici-login-logo {
+  background: linear-gradient(135deg, #A6192E 0%, #7E1322 100%);
+  padding: 28px 32px 22px;
+  text-align: center;
+  border-bottom: 4px solid #E06336;
+}
+#icici-login-logo img { height: 48px; margin-bottom: 10px; display: block; margin: 0 auto 10px; }
+#icici-login-title    { color:#fff; font-size:18px; font-weight:700; letter-spacing:.5px; }
+#icici-login-subtitle { color:rgba(255,255,255,.75); font-size:12px; margin-top:3px; }
+#icici-login-form     { padding: 28px 32px 24px; }
+.icici-field          { margin-bottom: 16px; }
+.icici-field label    { display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px; text-transform:uppercase; letter-spacing:.4px; }
+.icici-field input    { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid #ddd; border-radius:5px; font-size:14px; outline:none; transition:border-color .2s; }
+.icici-field input:focus { border-color:#A6192E; }
+#icici-login-btn {
+  width:100%; padding:12px; background:#A6192E; color:#fff;
+  border:none; border-radius:5px; font-size:15px; font-weight:600;
+  cursor:pointer; letter-spacing:.3px; transition:background .2s;
+}
+#icici-login-btn:hover { background:#7E1322; }
+#icici-login-error {
+  color:#A6192E; font-size:13px; margin-bottom:12px; min-height:18px;
+  font-weight:600; text-align:center;
+}
+#icici-login-hint {
+  text-align:center; font-size:11px; color:#999; margin-top:14px;
+}
+
+/* ── Header Banner ──────────────────────────────────── */
+.icici-header-banner {
+  display: flex !important;
+  align-items: center;
+  background: linear-gradient(90deg, #A6192E 0%, #7E1322 30%, #004A80 70%, #003060 100%);
+  border-bottom: 3px solid #E06336;
+  padding: 0 20px;
+  min-height: 64px;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 9000;
+}
+.icici-header-left   { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.icici-header-logo-img { height:38px; }
+.icici-header-title  { color:#fff; font-size:15px; font-weight:700; line-height:1.2; }
+.icici-header-subtitle { color:rgba(255,255,255,.7); font-size:10px; text-transform:uppercase; letter-spacing:.6px; }
+
+/* Centre nav */
+.icici-header-nav    { display:flex; align-items:center; gap:4px; flex:1; justify-content:center; flex-wrap:wrap; }
+.icici-nav-btn {
+  color:#fff; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
+  border-radius:4px; padding:6px 14px; font-size:13px; font-weight:500;
+  cursor:pointer; text-decoration:none; transition:background .18s;
+  display:inline-block;
+}
+.icici-nav-btn:hover { background:rgba(255,255,255,.22); color:#fff; text-decoration:none; }
+.icici-nav-btn.admin-only { border-color:#E06336; }
+
+/* Right side */
+.icici-header-right  { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.icici-user-chip     { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.12); border-radius:20px; padding:5px 12px; }
+.icici-user-icon     { font-size:9px; color:#E06336; }
+#icici-user-display  { color:#fff; font-size:13px; font-weight:600; }
+.icici-role-badge    { font-size:10px; font-weight:700; padding:2px 7px; border-radius:8px; text-transform:uppercase; letter-spacing:.4px; }
+.role-admin { background:#E06336; color:#fff; }
+.role-user  { background:rgba(255,255,255,.2); color:#fff; }
+.icici-logout-btn {
+  background:transparent; border:1px solid rgba(255,255,255,.4); color:#fff;
+  border-radius:4px; padding:5px 12px; font-size:12px; cursor:pointer;
+  transition:background .18s;
+}
+.icici-logout-btn:hover { background:rgba(255,255,255,.15); }
+</style>
+
+<!-- ═══════════════════════════════════════════════════
+     AUTH LOGIC
+     ═══════════════════════════════════════════════════ -->
+<script>
+(function() {
+
+  /* ── Credential store ─────────────────────────────────────────────
+     Format: username → { password, role, displayName }
+  ─────────────────────────────────────────────────────────────────── */
+  var USERS = {
+    "admin":  { password: "admin123",  role: "admin",  display: "Admin" },
+    "qa":     { password: "qa123",     role: "admin",  display: "QA Lead" },
+    "dev":    { password: "dev123",    role: "user",   display: "Developer" },
+    "reader": { password: "reader123", role: "user",   display: "Reader" }
+  };
+
+  /* ── Nav links per role ────────────────────────────────────────── */
+  /* p() = current page path so admin links work on every wiki page */
+  function p() { return location.pathname; }
+
+  var NAV = {
+    admin: [
+      { label: "Home",          href: function(){ return "/"; } },
+      { label: "▶ Run Suite",   href: function(){ return "/ApiTests?suite"; } },
+      { label: "▶ Test Page",   href: function(){ return p() + "?test"; } },
+      { label: "✎ Edit",        href: function(){ return p() + "?edit"; },       adminOnly: true },
+      { label: "+ Add Child",   href: function(){ return p() + "?new"; },        adminOnly: true },
+      { label: "⚙ Tools",       href: function(){ return p() + "?refactor"; },   adminOnly: true },
+      { label: "☰ Properties",  href: function(){ return p() + "?properties"; }, adminOnly: true }
+    ],
+    user: [
+      { label: "Home",          href: function(){ return "/"; } },
+      { label: "▶ Run Suite",   href: function(){ return "/ApiTests?suite"; } },
+      { label: "▶ Test Page",   href: function(){ return p() + "?test"; } }
+    ]
+  };
+
+  var SESSION_KEY = "ici_session";
+
+  function saveSession(user, role, display) {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: user, role: role, display: display }));
+  }
+
+  function loadSession() {
+    try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch(e) { return null; }
+  }
+
+  function clearSession() {
+    sessionStorage.removeItem(SESSION_KEY);
+  }
+
+  function buildNav(role) {
+    var links = NAV[role] || NAV.user;
+    var nav = document.getElementById("icici-header-nav");
+    if (!nav) return;
+    nav.innerHTML = "";
+    links.forEach(function(l) {
+      var a = document.createElement("a");
+      a.href = typeof l.href === "function" ? l.href() : l.href;
+      a.className = "icici-nav-btn" + (l.adminOnly ? " admin-only" : "");
+      a.textContent = l.label;
+      nav.appendChild(a);
+    });
+  }
+
+  function showApp(session) {
+    var overlay = document.getElementById("icici-login-overlay");
+    if (overlay) overlay.style.display = "none";
+
+    var banner = document.getElementById("icici-header-banner");
+    if (banner) banner.style.display = "flex";
+
+    var nameEl = document.getElementById("icici-user-display");
+    if (nameEl) nameEl.textContent = session.display;
+
+    var badge = document.getElementById("icici-role-badge");
+    if (badge) {
+      badge.textContent = session.role === "admin" ? "Admin" : "Viewer";
+      badge.className = "icici-role-badge " + (session.role === "admin" ? "role-admin" : "role-user");
+    }
+
+    buildNav(session.role);
+
+    if (session.role !== "admin") {
+      lockForReadOnly();
+    }
+  }
+
+  function lockForReadOnly() {
+    document.addEventListener("DOMContentLoaded", function() {
+      ["input[type=submit]","button[type=submit]",
+       "textarea","input[type=text]"].forEach(function(sel) {
+        document.querySelectorAll(sel).forEach(function(el) {
+          el.disabled = true;
+          el.title = "Read-only access — contact Admin to edit";
+        });
+      });
+      if (/[?&](edit|addChild|saveData|save|delete|properties)/.test(location.search)) {
+        document.body.innerHTML =
+          '<div style="margin:80px auto;max-width:500px;text-align:center;font-family:Arial">' +
+          '<h2 style="color:#A6192E">Access Denied</h2>' +
+          '<p>Your role (<strong>Viewer</strong>) does not have permission to perform this action.</p>' +
+          '<a href="/" style="color:#004A80">← Back to Home</a></div>';
+      }
+    });
+  }
+
+  /* ── Public functions ──────────────────────────────────────────── */
+  window.iciLogin = function() {
+    var u = (document.getElementById("icici-username").value || "").trim().toLowerCase();
+    var p = document.getElementById("icici-password").value || "";
+    var errEl = document.getElementById("icici-login-error");
+
+    if (!u || !p) { errEl.textContent = "Please enter username and password."; return; }
+
+    var rec = USERS[u];
+    if (!rec || rec.password !== p) {
+      errEl.textContent = "Invalid username or password.";
+      document.getElementById("icici-password").value = "";
+      return;
+    }
+
+    errEl.textContent = "";
+    saveSession(u, rec.role, rec.display);
+    showApp({ display: rec.display, role: rec.role });
+  };
+
+  window.iciLogout = function() {
+    clearSession();
+    location.reload();
+  };
+
+  /* Enter key on login form */
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && document.getElementById("icici-login-overlay") &&
+        document.getElementById("icici-login-overlay").style.display !== "none") {
+      iciLogin();
+    }
+  });
+
+  /* ── Auto-restore session on page load ────────────────────────── */
+  var existing = loadSession();
+  if (existing) {
+    showApp(existing);
+  }
+
+})();
+</script>
+
+<!-- No nav cleaner needed: FitNesse default nav is suppressed at the
+     server-side template level in skeleton.vm / wikiNav.vm / breadcrumb.vm -->
+-!
