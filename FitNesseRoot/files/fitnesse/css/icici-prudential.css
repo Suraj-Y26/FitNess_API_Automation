@@ -342,6 +342,15 @@ td.error {
 .test-summary {
   border-left: 5px solid var(--icici-maroon);
   padding-left: 12px;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-direction: row !important;
+}
+#test-summary .buttons, 
+.test-summary .buttons {
+  order: 2 !important; /* Push buttons (Execution Log) to the right! */
+  margin-left: auto !important;
 }
 
 /* ==========================================
