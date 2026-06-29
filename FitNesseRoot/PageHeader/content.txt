@@ -345,23 +345,16 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
     if (!nav) return;
     nav.innerHTML = "";
     
-    var isHome = p() === "/" || p() === "/FrontPage" || p() === "" || p() === "/index.html";
-    
-    // Prepend a beautiful Back Button if we are NOT on the homepage!
-    if (!isHome) {
+    // Prepend a beautiful Back Button ONLY if we are currently viewing the Execution Log!
+    if (/[?&]executionLog/.test(location.search)) {
       var backBtn = document.createElement("a");
-      if (/[?&]executionLog/.test(location.search)) {
-        backBtn.href = p();
-        backBtn.textContent = "⬅ Go Back to Test";
-      } else {
-        backBtn.href = "/";
-        backBtn.textContent = "⬅ Go Back to Home";
-      }
+      backBtn.href = p();
       backBtn.className = "icici-nav-btn admin-only";
       backBtn.style.background = "#E06336";
       backBtn.style.borderColor = "#E06336";
       backBtn.style.color = "#fff";
       backBtn.style.fontWeight = "bold";
+      backBtn.textContent = "⬅ Go Back to Test";
       nav.appendChild(backBtn);
     }
     
