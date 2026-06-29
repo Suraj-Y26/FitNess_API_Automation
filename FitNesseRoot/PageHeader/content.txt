@@ -177,11 +177,25 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
   /* p() = current page path so admin links work on every wiki page */
   function p() { return location.pathname; }
 
+  function getRunUrl() {
+    if (p() === "/" || p() === "/FrontPage" || p() === "" || p() === "/index.html") {
+      return "/ApiTests?suite";
+    }
+    // Dynamically detect if current page is a Suite or Test page!
+    var isSuite = /suite/i.test(document.title) || 
+                  /suite/i.test(location.search) ||
+                  document.querySelector(".suite") !== null ||
+                  document.body.className.indexOf("suite") !== -1;
+    if (isSuite) {
+      return p() + "?suite";
+    }
+    return p() + "?test";
+  }
+
   var NAV = {
     admin: [
       { label: "Home",          href: function(){ return "/"; } },
-      { label: "▶ Run Suite",   href: function(){ return "/ApiTests?suite"; } },
-      { label: "▶ Test Page",   href: function(){ return p() + "?test"; } },
+      { label: "▶ Run",         href: function(){ return getRunUrl(); } },
       { label: "✎ Edit",        href: function(){ return p() + "?edit"; },       adminOnly: true },
       { label: "+ Add Child",   href: function(){ return p() + "?new"; },        adminOnly: true },
       { label: "❌ Delete Page", href: function(){ return p() + "?deletePage"; }, adminOnly: true },
@@ -190,8 +204,7 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
     ],
     user: [
       { label: "Home",          href: function(){ return "/"; } },
-      { label: "▶ Run Suite",   href: function(){ return "/ApiTests?suite"; } },
-      { label: "▶ Test Page",   href: function(){ return p() + "?test"; } }
+      { label: "▶ Run",         href: function(){ return getRunUrl(); } }
     ]
   };
 
