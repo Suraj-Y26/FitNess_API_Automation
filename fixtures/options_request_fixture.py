@@ -45,7 +45,7 @@ class OptionsRequestFixture:
             self._actual_status_code = response.status_code
             self._response_headers = dict(response.headers)
 
-            print(f"[OPTIONS] {self._url} → {self._actual_status_code} ({self._response_time_ms}ms)")
+            print(f"[OPTIONS] {self._url} -> {self._actual_status_code} ({self._response_time_ms}ms)")
             self._executed = True
             return True
 

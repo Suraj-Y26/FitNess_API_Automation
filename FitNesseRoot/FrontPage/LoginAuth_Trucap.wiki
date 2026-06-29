@@ -1,0 +1,8 @@
+---
+Test
+---
+!define TEST_SYSTEM {slim}
+
+!|fixtures.PostRequestFixture|
+|url|bodyJson|statusCodes?|responseBody?|
+|${BASE_URL}/api/v2/login|{"Username":"suraj","Password":"Sur$0402"}|200||

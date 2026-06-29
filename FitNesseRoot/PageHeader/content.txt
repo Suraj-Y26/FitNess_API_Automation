@@ -131,18 +131,18 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
 .icici-header-subtitle { color:rgba(255,255,255,.7); font-size:10px; text-transform:uppercase; letter-spacing:.6px; }
 
 /* Centre nav */
-.icici-header-nav    { display:flex; align-items:center; gap:4px; flex:1; justify-content:center; flex-wrap:wrap; }
+.icici-header-nav    { display:flex; align-items:center; gap:4px; flex:1; justify-content:center; flex-wrap:nowrap !important; }
 .icici-nav-btn {
   color:#fff; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
-  border-radius:4px; padding:6px 14px; font-size:13px; font-weight:500;
+  border-radius:4px; padding:5px 8px !important; font-size:12px; font-weight:500;
   cursor:pointer; text-decoration:none; transition:background .18s;
-  display:inline-block;
+  display:inline-block; white-space:nowrap !important;
 }
 .icici-nav-btn:hover { background:rgba(255,255,255,.22); color:#fff; text-decoration:none; }
 .icici-nav-btn.admin-only { border-color:#E06336; }
 
 /* Right side */
-.icici-header-right  { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.icici-header-right  { display:flex; align-items:center; gap:8px; flex-shrink:0; }
 .icici-user-chip     { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.12); border-radius:20px; padding:5px 12px; }
 .icici-user-icon     { font-size:9px; color:#E06336; }
 #icici-user-display  { color:#fff; font-size:13px; font-weight:600; }

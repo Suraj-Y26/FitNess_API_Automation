@@ -1,27 +1,22 @@
+import html
+from core.logger import logger, log_request, log_response
 import time
 from typing import List, Optional
 import requests
 from .auth_fixture import AuthFixture
 
 class PostRequestFixture:
-    """
-    Python SLIM Decision Table fixture for HTTP POST requests.
-    Supports token injection, raw JSON body payloads, and response field extraction.
-    """
-
     def __init__(self) -> None:
         self._url: str = ""
         self._body_json: str = "{}"
         self._key: str = ""
         self._expected_codes: List[int] = []
-
         self._executed: bool = False
         self._actual_status_code: int = 0
         self._response_body: str = ""
         self._response_time_ms: int = 0
         self._response_body_json: dict = {}
 
-    # Setters mapped to columns
     def set_url(self, url: str) -> None:
         self._url = url
 
@@ -37,19 +32,20 @@ class PostRequestFixture:
             try:
                 self._expected_codes.append(int(code.strip()))
             except ValueError:
-                print(f"Invalid status code configuration: {code}")
+                logger.warning(f"Invalid status code: {code}")
 
-    # Action mapped to execute?
     def execute(self) -> bool:
         try:
             headers = {"Content-Type": "application/json"}
-            # Auto-inject bearer token if generated
             token = AuthFixture.get_stored_token()
             if token:
                 headers["Authorization"] = f"Bearer {token}"
 
+            # Log Request
+            log_request("POST", self._url, headers=headers, payload=html.unescape(self._body_json))
+
             start = time.perf_counter()
-            response = requests.post(self._url, data=self._body_json, headers=headers, timeout=15)
+            response = requests.post(self._url, data=html.unescape(self._body_json).encode('utf-8'), headers=headers, timeout=15)
             self._response_time_ms = int((time.perf_counter() - start) * 1000)
 
             self._actual_status_code = response.status_code
@@ -60,15 +56,17 @@ class PostRequestFixture:
             except Exception:
                 self._response_body_json = {}
 
-            print(f"[POST] {self._url} → {self._actual_status_code} ({self._response_time_ms}ms)")
+            # Log Response
+            log_response(self._actual_status_code, self._response_body, dict(response.headers))
+            logger.info(f"[POST] {self._url} -> {self._actual_status_code} ({self._response_time_ms}ms)")
+            
             self._executed = True
             return True
 
         except Exception as e:
-            print(f"[POST] Exception [{self._url}]: {str(e)}")
+            logger.error(f"[POST] Exception [{self._url}]: {str(e)}")
             return False
 
-    # Getters/Assertions mapped to column?
     def executed(self) -> bool:
         return self._executed
 
@@ -84,18 +82,14 @@ class PostRequestFixture:
     def status_codes(self) -> str:
         if not self._expected_codes:
             return str(self._actual_status_code)
-
         if self._actual_status_code in self._expected_codes:
             return str(self._actual_status_code)
-
         return f"{self._actual_status_code} (expected: {self._expected_codes})"
 
     def response_field(self) -> str:
-        """Returns the value of 'key' from the JSON response."""
         if not self._key:
             return "no key set"
         try:
-            # Support basic nested path lookup natively (e.g. $.id or $.data.id)
             if self._key.startswith("$."):
                 path_parts = self._key[2:].split(".")
                 val = self._response_body_json
@@ -103,7 +97,6 @@ class PostRequestFixture:
                     val = val[part]
                 return str(val)
             else:
-                # Standard flat key lookup fallback
                 return str(self._response_body_json.get(self._key, "key not found"))
         except Exception:
             return "key not found"

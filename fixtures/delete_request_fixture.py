@@ -42,7 +42,7 @@ class DeleteRequestFixture:
             self._actual_status_code = response.status_code
             self._response_body = response.text
 
-            print(f"[DELETE] {self._url} → {self._actual_status_code} ({self._response_time_ms}ms)")
+            print(f"[DELETE] {self._url} -> {self._actual_status_code} ({self._response_time_ms}ms)")
             self._executed = True
             return True
 

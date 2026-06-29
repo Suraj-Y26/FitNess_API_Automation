@@ -1,3 +1,4 @@
+import html
 import time
 from typing import List, Optional
 import requests
@@ -56,7 +57,7 @@ class PutRequestFixture:
             except Exception:
                 self._response_body_json = {}
 
-            print(f"[PUT] {self._url} → {self._actual_status_code} ({self._response_time_ms}ms)")
+            print(f"[PUT] {self._url} -> {self._actual_status_code} ({self._response_time_ms}ms)")
             self._executed = True
             return True
 

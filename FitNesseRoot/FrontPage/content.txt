@@ -222,7 +222,7 @@
     active: "Dev",
     environments: {
       "Dev": "http://192.168.4.187/trubi25v2rel",
-      "QA": "http://qa-api.icicipru.com/api",
+      "QA": "https://dummyjson.com",
       "UAT": "http://uat-api.icicipru.com/api",
       "Prod": "https://api.icicipru.com/api"
     }
