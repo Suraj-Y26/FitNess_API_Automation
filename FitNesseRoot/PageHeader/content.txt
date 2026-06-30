@@ -315,7 +315,7 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
   var NAV = {
     admin: [
       { label: "Home",          href: function(){ return "/"; } },
-      { label: "▶ Run",         href: function(){ return getRunUrl(); } },
+      { label: "▶ Run",         href: "javascript:location.href = getRunUrl();" },
       { label: "✎ Edit",        href: function(){ return p() + "?edit"; },       adminOnly: true },
       { label: "+ Add Child",   href: function(){ return p() + "?new"; },        adminOnly: true },
       { label: "❌ Delete Page", href: function(){ return p() + "?deletePage"; }, adminOnly: true },
@@ -324,7 +324,7 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
     ],
     user: [
       { label: "Home",          href: function(){ return "/"; } },
-      { label: "▶ Run",         href: function(){ return getRunUrl(); } }
+      { label: "▶ Run",         href: "javascript:location.href = getRunUrl();" }
     ]
   };
 
