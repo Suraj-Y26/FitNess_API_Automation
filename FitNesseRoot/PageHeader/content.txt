@@ -446,9 +446,10 @@ body { padding-top: 0 !important; margin-top: 0 !important; }
       nav.appendChild(backBtn);
     }
     
-    // Prepend our premium "Export to Excel" button STRICTLY when viewing a specific date's history run! 🟢
-    var isSpecificHistoryRun = /[?&]pagehistory/i.test(location.search) && /[?&]entry/i.test(location.search);
-    if (isSpecificHistoryRun) {
+    // Prepend our premium "Export to Excel" button on Completed Test/Suite Results OR specific historical runs! 🟢
+    var isResultOrHistoryRun = /[?&](test|suite)/i.test(location.search) || 
+                               (/[?&]pagehistory/i.test(location.search) && /[?&]entry/i.test(location.search));
+    if (isResultOrHistoryRun) {
       var exportBtn = document.createElement("button");
       exportBtn.className = "icici-nav-btn admin-only";
       exportBtn.style.background = "#155724";
