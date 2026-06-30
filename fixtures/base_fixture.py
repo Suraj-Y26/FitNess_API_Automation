@@ -1,6 +1,7 @@
 import html
 import json
 import time
+import base64
 from typing import List, Optional
 import requests
 from .auth_fixture import AuthFixture
@@ -17,6 +18,7 @@ class BaseRequestFixture:
         self._body_json: str = ""
         self._key: str = ""
         self._expected_codes: List[int] = []
+        self._basic_auth_header: str = ""
 
         self._executed: bool = False
         self._actual_status_code: int = 0
@@ -24,14 +26,36 @@ class BaseRequestFixture:
         self._response_time_ms: int = 0
         self._response_body_json: dict = {}
 
+    # Setters (Supporting both camelCase and snake_case natively for compatibility!)
     def set_url(self, url: str) -> None:
         self._url = url
+    def setUrl(self, url: str) -> None:
+        self.set_url(url)
 
     def set_body_json(self, body_json: str) -> None:
         self._body_json = body_json
+    def setBodyJson(self, body_json: str) -> None:
+        self.set_body_json(body_json)
 
     def set_key(self, key: str) -> None:
         self._key = key
+    def setKey(self, key: str) -> None:
+        self.set_key(key)
+
+    def set_basic_auth(self, credentials: str) -> None:
+        """
+        Sets Basic Authentication header.
+        Format inside FitNesse cell: username:password (e.g. suraj:Sur$0402)
+        """
+        unescaped_cred = html.unescape(credentials)
+        if ":" in unescaped_cred:
+            user, pwd = unescaped_cred.split(":", 1)
+            encoded = base64.b64encode(f"{user}:{pwd}".encode("utf-8")).decode("utf-8")
+            self._basic_auth_header = f"Basic {encoded}"
+        else:
+            logger.warning(f"Invalid basic auth format: '{credentials}'")
+    def setBasicAuth(self, credentials: str) -> None:
+        self.set_basic_auth(credentials)
 
     def set_status_codes(self, codes: str) -> None:
         self._expected_codes = []
@@ -40,13 +64,20 @@ class BaseRequestFixture:
                 self._expected_codes.append(int(code.strip()))
             except ValueError:
                 logger.warning(f"Invalid status code: {code}")
+    def setStatusCodes(self, codes: str) -> None:
+        self.set_status_codes(codes)
 
     def _make_request(self, method: str) -> bool:
         try:
             headers: dict = {}
-            token = AuthFixture.get_stored_token()
-            if token:
-                headers["Authorization"] = f"Bearer {token}"
+            
+            # Use Basic Auth if specified, otherwise fall back to cached Bearer Token
+            if self._basic_auth_header:
+                headers["Authorization"] = self._basic_auth_header
+            else:
+                token = AuthFixture.get_stored_token()
+                if token:
+                    headers["Authorization"] = f"Bearer {token}"
 
             unescaped_body = html.unescape(self._body_json)
             
@@ -90,6 +121,10 @@ class BaseRequestFixture:
 
     def actual_status_code(self) -> int:
         return self._actual_status_code
+
+    def status_code(self) -> str:
+        """Returns the actual status code as a string (supports statusCode?)."""
+        return str(self._actual_status_code)
 
     def response_body(self) -> str:
         try:

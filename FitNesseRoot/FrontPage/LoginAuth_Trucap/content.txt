@@ -1,7 +1,6 @@
----
-Test
----
 !define TEST_SYSTEM {slim}
 !| fixtures.AuthFixture |
-| tokenUrl | bodyJson | tokenField | generateToken? | statusCode? | token? | responseBody? |
-| https://c1790.trucap.io/trucapapi/api/v2/login | {"username":"suraj","password":"!-Sur$0402-!"} | token | true | 200 | | |
+| url | basicAuth | statusCodes? | responseBody? |
+| https://c1790.trucap.io/trucapapi/api/v2/login |!-suraj:Sur$0402-! | 200 | |
+
+

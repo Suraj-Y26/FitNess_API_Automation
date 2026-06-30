@@ -1,5 +1,6 @@
 import html
 import json
+import base64
 import requests
 import time
 from typing import List
@@ -19,6 +20,7 @@ class AuthFixture:
         self._body_json: str = "{}"
         self._token_field: str = "token"
         self._expected_codes: List[int] = []
+        self._basic_auth_header: str = ""
         
         self._actual_status_code: int = 0
         self._response_body: str = ""
@@ -43,12 +45,35 @@ class AuthFixture:
     # Setters mapped to columns
     def set_token_url(self, token_url: str) -> None:
         self._token_url = token_url
+    def setTokenUrl(self, token_url: str) -> None:
+        self.set_token_url(token_url)
+        
+    def set_url(self, url: str) -> None:
+        """Alias to support 'url' column natively, matching PostRequestFixture."""
+        self._token_url = url
+    def setUrl(self, url: str) -> None:
+        self.set_url(url)
 
     def set_body_json(self, body_json: str) -> None:
         self._body_json = body_json
+    def setBodyJson(self, body_json: str) -> None:
+        self.set_body_json(body_json)
 
     def set_token_field(self, token_field: str) -> None:
         self._token_field = token_field
+    def setTokenField(self, token_field: str) -> None:
+        self.set_token_field(token_field)
+
+    def set_basic_auth(self, credentials: str) -> None:
+        unescaped_cred = html.unescape(credentials)
+        if ":" in unescaped_cred:
+            user, pwd = unescaped_cred.split(":", 1)
+            encoded = base64.b64encode(f"{user}:{pwd}".encode("utf-8")).decode("utf-8")
+            self._basic_auth_header = f"Basic {encoded}"
+        else:
+            logger.warning(f"[Auth] Invalid basic auth format: '{credentials}'")
+    def setBasicAuth(self, credentials: str) -> None:
+        self.set_basic_auth(credentials)
 
     def set_status_codes(self, codes: str) -> None:
         self._expected_codes = []
@@ -57,15 +82,23 @@ class AuthFixture:
                 self._expected_codes.append(int(code.strip()))
             except ValueError:
                 logger.warning(f"[Auth] Invalid status code: {code}")
+    def setStatusCodes(self, codes: str) -> None:
+        self.set_status_codes(codes)
 
     # Action mapped to execute
+    def execute(self) -> bool:
+        """Standard Decision Table execution alias."""
+        return self.generate_token()
+
     def generate_token(self) -> bool:
         """Sends a POST request to generate the token and stores it statically."""
         try:
             unescaped_body = html.unescape(self._body_json)
             
             headers = {"Content-Type": "application/json"}
-            
+            if self._basic_auth_header:
+                headers["Authorization"] = self._basic_auth_header
+
             # Log Request
             log_request("POST", self._token_url, headers=headers, payload=unescaped_body)
 
@@ -142,6 +175,6 @@ class AuthFixture:
         try:
             json_data = json.loads(self._response_body)
             pretty_json = json.dumps(json_data, indent=2)
-            return f"\n{{{{\n{pretty_json}\n}}\n"
+            return f"\n{{{{\n{pretty_json}\n}}}}\n"
         except Exception:
-            return f"\n{{{{\n{self._response_body}\n}}\n"
+            return f"\n{{{{\n{self._response_body}\n}}}}\n"
